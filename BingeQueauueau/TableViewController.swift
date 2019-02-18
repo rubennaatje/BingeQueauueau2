@@ -10,7 +10,28 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
-    var series = ["Rick and Morty", "Archer", "House of Cards", "Breaking Bad"]
+    private var content = [
+        Series(title: "Rick and Morty",
+               description: "An animated series that follows the exploits of a super scientist and his not so bright grandson",
+               seasons: 2,
+               image: UIImage(named: "rickandmorty")),
+        
+        Series(title: "Archer",
+               description: "Covert black ops and espionage take a back seat to zany personalities and relationships between secret agents and drones.",
+               seasons: 7,
+               image: UIImage(named: "archer")),
+        
+        
+        Series(title: "House of Cards",
+               description: "A Congressman works with his equally conniving wife to exact revenge on the people who betrayed him.",
+               seasons: 4,
+               image: UIImage(named: "houseofcards")),
+        
+        Series(title: "Breaking Bad",
+               description: "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.",
+               seasons: 5,
+               image: UIImage(named: "breakingbad"))
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,26 +40,31 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return series.count;
+        return content.count;
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
     
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SerieCell", for: indexPath)
 
-        cell.textLabel?.text = series[indexPath.row]
+        cell.textLabel?.text = content[indexPath.row].title
 
         return cell
     }
  
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let detailController = segue.destination as? DetailViewController {
+            detailController.series = content[self.tableView.indexPathForSelectedRow!.row]
+        }
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
